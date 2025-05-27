@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Orders</title>
+  <link rel="icon" href="../images/user-gear.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/users.css">
+  <style>
+    #searchInput{
+        width: 20%;
+        padding: 3px;
+    }
+  </style>
+</head>
+<body onload="initOrdersPage()">
+
+  <h1>📦 Manage Orders</h1>
+  <button onclick="window.location.href='admin.html'">⬅ Back to Dashboard</button>
+
+  <!-- Filter & Search Section -->
+  <div style="margin-top: 20px;">
+    <input type="text" id="searchInput" placeholder="🔍 Search by Name, Email, Order ID" onkeyup="filterOrders()" />
+    <select id="statusFilter" onchange="filterOrders()">
+      <option value="">All Status</option>
+      <option value="SUCCESS">SUCCESS</option>
+      <option value="CREATED">CREATED</option>
+    </select>
+    <button onclick="exportOrdersToCSV()">⬇ Export CSV</button>
+  </div>
+
+  <!-- Orders Table -->
+  <table id="orderTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Order ID</th>
+        <th>Payment ID</th>
+        <th>Created At</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Orders will be injected by JavaScript -->
+    </tbody>
+  </table>
+
+  <!-- View Order Modal -->
+  <div id="viewOrderModal" class="modal1" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeViewOrderModal()">&times;</span>
+      <h2>Order Details</h2>
+      <div id="orderDetailsContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      alert("Not logged in!");
+      window.location.href = "../login.html";
+    } else {
+      const payload = parseJwt(token);
+      if (!payload || payload.role !== "ADMIN") {
+        alert("Access denied! Only admins can view this page.");
+        window.location.href = "../index.html";
+      }
+    }
+
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (e) {
+        return null;
+      }
+    }
+  </script>
+
+  <script src="js/orders.js"></script>
+</body>
+</html>

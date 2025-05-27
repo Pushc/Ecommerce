@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="images/checkout.png" type="image/png">
+  <title>Products Checkout</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <link rel="stylesheet" href="css/checkout.css" />
+  <style>
+    .checkout-cart-section {
+      margin-top: 30px;
+    }
+
+    .checkout-cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .checkout-cart-table th,
+    .checkout-cart-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .checkout-cart-table th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="payment-section">
+      <h1>Payment Details</h1>
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter Name" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter Email" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone (WhatsApp enabled to access later)</label>
+        <div class="phone-input">
+          <div class="flag">
+            <img src="/images/image.png" alt="IN" />
+            <span>+91</span>
+          </div>
+          <input type="tel" id="phone" placeholder="Enter Phone" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Address</label>
+        <textarea style="border-radius: 15px; padding: 20px; font-size: 19px;" id="address" placeholder="Enter Address" rows="6" cols="100"></textarea>
+      </div>
+
+   
+
+      <div class="price-card">
+        <!-- <div class="price-row">
+            <span>Original Price</span>
+            <span>₹9,999.00</span>
+          </div>
+          <div class="price-row">
+            <span>Discount</span>
+            <span class="negative-amount">-₹6,049.40</span>
+          </div> -->
+        <div class="checkout-cart-section">
+          <h2>Your Order Summary</h2>
+          <table class="checkout-cart-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="checkout-cart-items">
+              <!-- Items will be populated here -->
+            </tbody>
+          </table>
+        </div>
+
+        
+        <div class="price-breakdown text-end mt-4" style="font-size: 18px;">
+        <div class="price-row">
+          <span>Subtotal</span>
+          <span>₹<span id="subtotal">0.00</span></span>
+        </div>
+        <div class="price-row">
+          <span>GST (18%)</span>
+          <span>₹<span id="gst">0.00</span></span>
+        </div>
+        <div class="price-row total-row" style="font-weight: bold; font-size: 20px;">
+          <span>Grand Total</span>
+          <span>₹<span id="grand-total">0.00</span></span>
+        </div>
+      </div>
+
+      </div>
+
+
+      <button class="pay-button">
+        <i class="fas fa-lock"></i> Pay ₹3,950
+      </button>
+      <div class="payment-methods">
+        <i class="fab fa-cc-visa"></i>
+        <i class="fab fa-cc-mastercard"></i>
+        <i class="fab fa-cc-amex"></i>
+        <i class="fab fa-google-pay"></i>
+        <i class="fab fa-apple-pay"></i>
+      </div>
+      <div class="secure-text">
+        <i class="fas fa-shield-alt"></i> Secure payment - 100% safe checkout
+      </div>
+    </div>
+  </div>
+
+  <script src="js/checkout.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    setupTokenExpiryLogout();
+  </script>
+</body>
+
+</html>

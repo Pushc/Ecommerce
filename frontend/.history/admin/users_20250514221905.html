@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+   <link rel="icon" href="../images/user-gear.png" type="image/png">
+  <title>Manage Users</title>
+  <link rel="stylesheet" href="css/users.css">
+</head>
+<body onload="initUsersPage()">
+
+  <h1>👥 Manage Users</h1>
+  <button onclick="window.location.href='admin.html'">⬅ Back to Dashboard</button>
+
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Users will be dynamically inserted here -->
+    </tbody>
+  </table>
+
+  <script src="js/users.js"></script>
+</body>
+</html>

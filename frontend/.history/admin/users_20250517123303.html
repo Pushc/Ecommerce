@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+   <link rel="icon" href="../images/user-gear.png" type="image/png">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Manage Users</title>
+  <link rel="stylesheet" href="css/users.css">
+</head>
+<body onload="initUsersPage()">
+
+  <h1>👥 Manage Users</h1>
+  <button onclick="window.location.href='admin.html'">⬅ Back to Dashboard</button>
+
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Users will be dynamically inserted here -->
+    </tbody>
+  </table>
+
+
+    <div id="editUserModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditUserModal()">&times;</span>
+      <h2>Edit User</h2>
+      <form id="editUserForm">
+        <input type="text" id="editUsername" placeholder="Username" required />
+        <input type="email" id="editEmail" placeholder="Email" required />
+        <button type="submit" class="btn-update">Update</button>
+        <button type="button" class="btn-cancel" onclick="closeEditUserModal()">Cancel</button>
+      </form>
+    </div>
+   </div>
+
+
+
+
+  <script src="js/users.js"></script>
+</body>
+</html>

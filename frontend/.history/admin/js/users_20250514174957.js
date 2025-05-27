@@ -1,0 +1,118 @@
+function redirectIfNotAdmin() {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    alert("Not logged in!");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Decode the JWT payload to extract the role
+  const payloadBase64 = token.split('.')[1];
+  const payload = JSON.parse(atob(payloadBase64));
+
+  if (payload.role !== "ADMIN") {
+    alert("Access denied! Only admins can view this page.");
+    window.location.href = "index.html"; // Redirect to safe page
+  }
+}
+
+// This function runs when the page loads
+function initUsersPage() {
+  redirectIfNotAdmin();  // Step 1: Ensure only admins can view this page
+  fetchUsers();          // Step 2: Get and display all users in the table
+}
+
+// Fetch all users from the backend
+function fetchUsers() {
+  const token = localStorage.getItem("authToken");  // Get token from browser storage
+
+  // Check if the token is available
+  if (!token) {
+    alert("You are not logged in.");
+    window.location.href = "login.html";  // Redirect to login page
+    return;
+  }
+
+  // Make a GET request to your Spring Boot API
+  fetch("http://localhost:8080/admin/users", {
+    headers: {
+      Authorization: `Bearer ${token}` // Send token for authentication
+    },
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch users"); // Catch failed requests
+    }
+    return response.json(); // Convert the response to JSON
+  })
+  .then(users => {
+    const tbody = document.querySelector("#userTable tbody"); // Find the <tbody> in the table
+    tbody.innerHTML = ""; // Clear previous content
+
+    // Loop through the list of users received from backend
+    users.forEach(user => {
+      const row = document.createElement("tr"); // Create a new row for each user
+
+      // Fill the row with user details
+      row.innerHTML = `
+        <td>${user.id}</td>
+        <td>${user.name}</td>
+        <td>${user.email}</td>
+        <td>${user.role}</td>
+        <td>
+          ${
+            user.role !== "ADMIN"  // Prevent delete button for users with ADMIN role
+              ? `<button onclick="deleteUser(${user.id})">Delete</button>`
+              : "Cannot Delete (Admin)"
+          }
+        </td>
+      `;
+
+      // Add the row to the table
+      tbody.appendChild(row);
+    });
+  })
+  .catch(error => {
+    console.error("Error fetching users:", error);
+    alert("Failed to load users.");
+  });
+}
+
+// Function to delete a user
+function deleteUser(userId) {
+  const token = localStorage.getItem("authToken");  // Get token from local storage
+
+  if (!token) {
+    alert("You are not logged in.");
+    window.location.href = "login.html";  // Redirect to login page
+    return;
+  }
+
+  // Confirm delete action
+  const confirmation = confirm("Are you sure you want to delete this user?");
+  if (!confirmation) return;  // Do nothing if user cancels
+
+  // Make a DELETE request to the backend
+  fetch(`http://localhost:8080/admin/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}` // Send token for authentication
+    },
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Failed to delete user");
+    }
+    // Reload the users table after successful deletion
+    alert("User deleted successfully.");
+    fetchUsers();  // Re-fetch the users to update the table
+  })
+  .catch(error => {
+    console.error("Error deleting user:", error);
+    alert("Failed to delete user.");
+  });
+}
+
+// Call fetchUsers() when the page is loaded to display the users
+document.addEventListener("DOMContentLoaded", fetchUsers);

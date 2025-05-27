@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <title>PC-Mart</title>
+  <!-- font awesome Icons-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Add Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    #chatbot-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007bff;
+      color: white;
+      font-size: 24px;
+      border-radius: 50%;
+      padding: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      z-index: 9999;
+    }
+  
+    #chatbot-window {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 400px;
+      height: 400px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      z-index: 9999;
+    }
+  
+    #chatbot-header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      border-radius: 10px 10px 0 0;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    #close-chat {
+      cursor: pointer;
+    }
+  
+    #chatbot-messages {
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+  
+    #chatbot-input {
+      border: none;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 150px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 0 0 10px 10px;
+    }
+  </style>
+
+  
+</head>
+
+<body style=" background: linear-gradient(to right, #bb4e32, #feb47b);">
+
+
+  <header>
+    <!-- place navbar here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a href="#" class="navbar-brand fw-bold"><i class="fa-solid fa-bag-shopping"></i>&nbsp;&nbsp;PC-Mart</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a href="#clothing-products" class="nav-link">Clothing</a>
+            </li>
+            <li class="nav-item">
+              <a href="#electronics-products" class="nav-link">Electronics</a>
+            </li>
+            <li class="nav-item">
+              <a href="#gadgets" class="nav-link">Gadgets</a>
+            </li>
+            <!-- Cart Icon in navbar -->
+            <li class="nav-item">
+              <a id="cart-icon" class="nav-link" href="cart.html">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-badge">0</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO BANNER: CROUSEL -->
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-touch="false">
+
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+          aria-label="Slide 3"></button>
+      </div>
+
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/images/img1.png" class="d-block w-100" alt="fashion">
+          <div class="carousel-caption d-none d-md-block">
+                      <h5>Flat 30% OFF</h5>
+                      <p>Shop now at H&M and get an amazing 30% discount on your favorite fashion items!</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="/images/img2.png" class="d-block w-100" alt="images">
+          <div class="carousel-caption d-none d-md-block">
+                      <h5>Flat 50% OFF</h5>
+                      <p>Exclusive offer! Get 30% OFF on Polo Brand Menswear. Elevate your style today!</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="/images/img4.png" class="d-block w-100" alt="images">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Flat 30% OFF</h5>
+            <p>Exclusive offer! Get 30% OFF on Puma Brand Men's shirt. </p>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+    </div>
+
+
+  </header>
+
+
+  <main>
+
+    <!-- Main Content Container of cards(items place) -->
+    <div class="container mt-5">
+
+         <!-- Trending Products -->
+      <h2 class="section-title">🔥 Trending Products</h2>
+      <div id="trending-products" class="row"></div>
+
+      <!-- Clothing -->
+      <h2 class="section-title mt-5">👗 Clothing Collection</h2>
+      <div id="clothing-products" class="row"></div>
+
+      <!-- Electronics -->
+      <h2 class="section-title mt-5">💻 Electronics</h2>
+      <div id="electronics-products" class="row"></div>
+
+      <!-- Gadgets -->
+      <h2 class="section-title mt-5">📟 Gadgets</h2>
+      <div id="gadgets" class="row"></div>
+    </div>
+
+  </main>
+
+
+  <footer style="background-color: black;" class="pt-3 pb-1">
+
+    <div class="container mt-5 mb-3">
+      <div class="row">
+
+        <!-- Online Store -->
+        <div class="col-md-3 col-12 text-center mb-5">
+          <h5 class="mb-4" style="color: white;">ONLINE STORE</h5>
+          <ul class="footer-list">
+            <li><a href="#">Men Clothing</a></li>
+            <li><a href="#">Women Clothing</a></li>
+            <li><a href="#">Men Accessories</a></li>
+            <li><a href="#">Women Accessories</a></li>
+          </ul>
+        </div>
+
+        <!-- Helpful Links -->
+        <div class="col-md-3 col-12 text-center mb-5">
+          <h5 class="mb-4" style="color: white;">HELPFUL LINKS</h5>
+          <ul class="footer-list">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+         <!-- Brand Partners -->
+         <div class="col-md-3 col-12 text-center mb-5">
+          <h5 class="mb-4" style="color: white;">BRAND PARTNERS</h5>
+          <ul class="footer-list">
+            <li><a href="https://www.zara.com/" target="_blank">Zara</a></li>
+            <li><a href="https://www.pantaloons.com/" target="_blank">Pantaloons</a></li>
+            <li><a href="https://levi.in/" target="_blank">Levi's</a></li>
+            <li><a href="https://www.ucb.com/" target="_blank">UCB</a></li>
+          </ul>
+        </div>
+
+         <!-- Address -->
+         <div class="col-md-3 col-12 text-center">
+          <h5 class="mb-4" style="color: white;">ADDRESS</h5>
+          <ul class="footer-list">
+            <li style="color: white;">Building 101</li>
+            <li style="color: white;">Central Avenue</li>
+            <li style="color: white;">Pune , India</li>
+          </ul>
+        </div>
+        
+      </div>
+
+      <div class="row mt-2">
+        <div class="row col-md-12">
+          <p class="copyright">
+            ©2025 PC-Mart | Designed by <strong>Pushkar Chavan</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Floating Chatbot Button -->
+  <div id="chatbot-button">💬</div>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-window">
+      <div id="chatbot-header">AI Assistant <span id="close-chat">×</span></div>
+      <div id="chatbot-messages"></div>
+      <input type="text" id="chatbot-input" placeholder="Type your message..." />
+    </div>
+
+
+  <!-- user js scripts -->
+   <script src="/js/api.js"></script>
+   <script src="/js/cart.js"></script>
+
+
+     
+  <script>
+    const chatbotBtn = document.getElementById('chatbot-button');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const closeChat = document.getElementById('close-chat');
+    const messagesDiv = document.getElementById('chatbot-messages');
+    const inputBox = document.getElementById('chatbot-input');
+  
+    let socket = new WebSocket("ws://localhost:8085/chat"); // update with your actual WebSocket URL
+  
+    chatbotBtn.onclick = () => chatbotWindow.style.display = 'flex';
+    closeChat.onclick = () => chatbotWindow.style.display = 'none';
+  
+    inputBox.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const msg = inputBox.value.trim();
+        if (!msg) return;
+        appendMessage("🧑‍💻 You", msg);
+        socket.send(msg);
+        inputBox.value = '';
+      }
+    });
+  
+    socket.onmessage = function (event) {
+      console.log(event);
+      
+    try {
+      const data = JSON.parse(event.data);
+
+      // Safely get the message text
+      const messageText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (messageText) {
+        appendMessage("🤖 AI", messageText.trim());
+      } else {
+        // Fallback: if expected data is not found
+        appendMessage("🤖 AI", "[No valid response found]");
+      }
+    } catch (error) {
+      console.error("Error parsing response:", error);
+      appendMessage("🤖 AI", event.data);  // fallback: raw response
+    }
+    };
+  
+    function appendMessage(sender, text) {
+      const msgDiv = document.createElement('div');
+
+      // Check if the message contains '||' (indicating a list of items)
+      if (text.includes("||")) {
+        // Optional: Split heading and product list if there's a colon
+        const [headingPart, productPartRaw] = text.includes(":")
+          ? text.split(":")
+          : ["Products", text];
+
+        const products = productPartRaw
+          .split("||")
+          .map(p => p.trim())
+          .filter(p => p.length > 0);
+
+        let formatted = `
+          <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #00d1b2;">
+            🛒 ${headingPart.trim()}
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+        `;
+
+        products.forEach(product => {
+          const match = product.match(/(.+)\s+\(₹([\d.]+)\)/);
+          if (match) {
+            const name = match[1].trim();
+            const price = match[2].trim();
+
+            formatted += `
+              <div style="background: #1e1e1e; padding: 15px; border-radius: 10px; border: 1px solid #444; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+                <div style="font-size: 16px; font-weight: bold; color: #ffd700;">${name}</div>
+                <div style="font-size: 14px; color: #ccc;">Price: <span style="font-weight: bold; color: #00d1b2;">₹${price}</span></div>
+              </div>
+            `;
+          } else {
+            // fallback if pattern doesn't match
+            formatted += `
+              <div style="background: #2c2c2c; padding: 15px; border-radius: 10px; border: 1px solid #444; color: #fff;">
+                ${product}
+              </div>
+            `;
+          }
+        });
+
+        formatted += `</div>`;
+
+        msgDiv.innerHTML = `<strong>${sender}:</strong><br>${formatted}`;
+      } else {
+        // default plain text if no '||' found
+        msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      }
+
+      messagesDiv.appendChild(msgDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+
+  </script>
+   
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const cartIcon = document.getElementById("cart-icon");
+      if (cartIcon) {
+        cartIcon.addEventListener("click", function (e) {
+          e.preventDefault();
+          const token = localStorage.getItem("authToken");
+          console.log("Cart clicked. Token:", token);
+          if (!token) {
+            console.log("Redirecting to login...");
+            window.location.href = "/login.html";
+          } else {
+            console.log("Token found. Redirecting to cart.");
+            window.location.href = "/cart.html";
+          }
+        });
+      }
+    });
+  </script>
+
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+    <!-- autologout -->
+    <script src="/js/auth.js"></script>
+
+
+    <script>
+       loadProducts();
+       updateCartCounter();
+       setupTokenExpiryLogout();
+    </script>
+</body>
+
+</html>
