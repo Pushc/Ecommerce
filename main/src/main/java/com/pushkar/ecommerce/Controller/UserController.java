@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "https://pc-mart.netlify.app"})
 public class UserController {
 
     @Autowired
@@ -19,7 +19,12 @@ public class UserController {
     // This ensures only this origin is allowed
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        if (userService.findByEmail(user.getEmail()).isPresent()) {
+        System.out.println("Register attempt for email: " + user.getEmail());
+        String existingUser = userService.findByEmail(user.getEmail());
+        System.out.println(existingUser);
+        System.out.println("Found user? " + existingUser.isPresent());
+    
+        if (existingUser.isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("Email already registered.");
@@ -30,4 +35,5 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body("User registered successfully.");
     }
+
 }
