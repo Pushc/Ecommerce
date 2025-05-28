@@ -26,10 +26,10 @@ async function loadProducts()
                                 <h5 class="card-title">${element.name}</h5>
                                 <p class="card-text">${element.description}</p>
                                 <p class="card-text"><strong>₹${element.price}</strong></p>
-                                <button class="btn btn-primary w-100" onclick="addToCart(${element.id},'${element.name}',${element.price},'${element.imageUrl}')">Add To Cart</button>
+                                <button class="btn btn-primary w-100" onclick="addToCart(${element.id},decodeURIComponent('${encodeURIComponent(element.name)}'),${element.price},decodeURIComponent('${encodeURIComponent(element.imageUrl)}'))">Add To Cart</button>
 
                                  
-                                 <button class="btn btn-success w-100 mt-3" onclick="addToWishlist(${element.id},'${element.name}',${element.price},'${element.imageUrl}')">Add to Wishlist</button>
+                                 <button class="btn btn-success w-100 mt-3" onclick="addToWishlist(${element.id},decodeURIComponent('${encodeURIComponent(element.name)}'),${element.price},decodeURIComponent('${encodeURIComponent(element.imageUrl)}'))">Add to Wishlist</button>
                                
                                 <a href="product-details.html?id=${element.id}" class="btn btn-secondary w-100 mt-3">View Details</a>
                             </div>
@@ -80,8 +80,10 @@ function addToWishlist(id, name, price, imageUrl) {
 function loadWishlist() {
     const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
     const wishlistContainer = document.getElementById("wishlist-container");
-    wishlistContainer.innerHTML = "";
-
+    
+    if (!wishlistContainer) return;
+     wishlistContainer.innerHTML = "";
+    
     if (wishlist.length === 0) {
         wishlistContainer.innerHTML = "<p>Your wishlist is empty.</p>";
     } else {
